@@ -56,7 +56,12 @@
                 success: function (respuesta){
                     console.log(respuesta.nombre);
                     console.log(respuesta.edad);
-                    $('#tabla').append("<tr><th scope='col'>"+ respuesta.nombre + "</th><th scope='col'>"+ respuesta.parentezco + "</th><th scope='col'>"+ respuesta.edad + "</th></tr>")
+                    $('#tabla').append("<tr>"")
+                    $('#tabla').append("<th scope='col'>"+ respuesta.fecha + "</th>")
+                    $('#tabla').append("<th scope='col'>"+ respuesta.concepto + "</th>")
+                    $('#tabla').append("<th scope='col'>"+ respuesta.monto + "</th>")
+                    $('#tabla').append("<th scope='col'>"+ respuesta.tipo + "</th>")
+                    $('#tabla').append("</tr>")
                 }
             })
         })
