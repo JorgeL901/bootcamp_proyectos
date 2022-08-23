@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form-insert">
+        <input type="text" name="nombre" placeholder="Ingrese el nombre">
+        <br>
+        <input type="text" name="apellido" placeholder="Ingrese el apellido">
+        <br>
+        <input type="number" name="edad" >
+        <br>
+        <button id="btn_insert">Insertar</button>
+    </form>
+    <form id="form_update">
+        <input type="text" name="id" id="dato_id" placeholder="Ingrese el Id a modificar">
+        <br>
+        <input type="text" name="nombre" placeholder="Ingrese el nombre">
+        <br>
+        <input type="text" name="apellido" placeholder="Ingrese el apellido">
+        <br>
+        <input type="number" name="edad" >
+        <br>
+        <select name="adulto" >
+            <option value="true">Mayor de edad</option>
+            <option value="false">Menor de edad</option>
+        </select>
+        <button id="btn_insert">Insertar</button>
+    
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script >
+        $(document).ready(function(){
+        //insert
+        //TERMINAR ESTA LINEA$("btn_insert"),click(function(e)
+            
+        //actualizar
+        $("#btn_update").click(function(e){
+            e.preventDefault();
+            var datos_modificar = $("#form_update").serialize();
+            var param_id = $("dato_id").val();
+
+            $.ajax({
+                url:"/persona/"+ param_id,//
+                method:"PUT",
+                data: datos_modificar,
+                success: function(respuesta){
+                    console.log(respuesta);
+                }
+            })
+        })    
+
+        var datos=$("#form_insert").serialize();
+        $.ajax({
+            url:"/persona",
+            method:"POST",
+            data: datos,
+            success:function(respuesta){
+                console.log(respuesta);
+            }
+        }
+        )
+        }
+        )
+        
+
+
+
+
+
+    </script>
+</body>
+</html>
