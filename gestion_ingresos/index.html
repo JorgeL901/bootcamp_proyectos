@@ -17,11 +17,12 @@
                 <div>Concepto:  </div><input type="text" placeholder="Concepto" name="concepto"><br>
                 <div>Monto:  $</div><input type="number" placeholder="Monto" name="monto"><br>
                 <div>Tipo de movimiento:  </div><select name="tipo" ><br>
-                    <option value="none">Ingreso/Egreso</option>
-                    <option value="Ingreso">Ingreso</option>
-                    <option value="Egreso">Egreso</option>
+                    <option value="true">Ingreso</option>
+                    <option value="false">Egreso</option>
                 </select>
                 <button id="boton">Enviar</button>
+                <button id="btn_insert">Insertar</button>
+                
             </form>
           </div>
          
@@ -35,10 +36,10 @@
                     <th scope="col">Concepto</th>
                     <th scope="col">Monto</th>
                     <th scope="col">Tipo</th>
+                    <th scope="col">Saldo</th>
                   </tr>
                 </thead>
             </table>    
-            <div id="total"></div>
           </div>
         </div>  
     </div>
@@ -50,13 +51,14 @@
             e.preventDefault();//Previene el comportamiento por defecto del boton de recargar toda la pagina
 
             var datos_form=$("#mi_formulario").serialize();//obtengo todos los datos de mi formulario (JSON)
-            var suma = 0;    
+            var suma;    
             //AJAX
             $.ajax({
                 url : "/usuario",
                 type : 'POST',
                 data : datos_form,
                 success: function (respuesta){
+                    var suma = 0;
                     console.log(respuesta.fecha);
                     console.log(respuesta.concepto);
                     console.log(respuesta.monto);
@@ -66,8 +68,12 @@
                     $('#tabla').append("<th scope='col'>"+ respuesta.concepto + "</th>");
                     $('#tabla').append("<th scope='col'>"+ respuesta.monto + "</th>");
                     $('#tabla').append("<th scope='col'>"+ respuesta.tipo + "</th>");
+                
+                
+                
+                    $('#tabla').append("<th scope='col'>"+ suma + "</th>");
                     $('#tabla').append("</tr>");
-                    var suma = suma + respuesta.monto;
+                    
                     console.log(suma)
                     
                 }
