@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leon Grandson Men's Perfume</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+    <style>
+      body{background-color: #BFC9CA;}
+      .card-img-top{
+        width: 90%;
+        height: 180px;
+                }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="./imagenes/logonegro.jpg" alt="" width="30" height="24" class="d-inline-block align-text-top"/>
+            Leon Grandson Men's Perfumes
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+              <div class="collapse navbar-collapse" id="navbarRight">
+                  <ul class="navbar-nav ">
+                      <li class="nav-item">
+                          <a class="nav-link" href="#">Productos</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#">Carrito</a>
+                      </li>
+                      
+                  </ul>
+              </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <h1>Gestion de productos</h1>
+                <h2>Insertar Producto Nuevo</h2>
+                <form id="admiForm">
+                    Producto: <br>
+                    <input type="text" name="name" placeholder="Nombre del producto" ><br>
+                    Descripción: <br>
+                    <input type="text" name="description" placeholder="Descripcion del producto"><br>
+                    Precio: <br>
+                    <input type="number" name="prize" placeholder="Precio del producto"><br>
+                    URLImagén: <br>
+                    <input type="text" name="image" placeholder="URL de la Imagén"><br>
+                    <button id="create">Cargar Nuevo producto</button>
+                </form>
+                <hr>
+                <h2>Modificar Producto</h2>
+                <form id="updateForm">
+                    ID Producto: <br>
+                    <input type="text" name="id" id="datoId" placeholder="Id del producto" ><br> 
+                    Producto: <br>
+                    <input type="text" name="name" placeholder="Nombre del producto" ><br>
+                    Descripción: <br>
+                    <input type="text" name="description" placeholder="Descripcion del producto"><br>
+                    Precio: <br>
+                    <input type="number" name="prize" placeholder="Precio del producto"><br>
+                    URLImagén: <br>
+                    <input type="text" name="image" placeholder="URL de la Imagén"><br>
+                    <button id="update">Modificar producto</button>
+                </form>
+                <hr>
+                <h2>Modificar Producto</h2>
+                <form id="deleteForm">
+                    ID Producto: <br>
+                    <input type="text" name="id" id="identificador" placeholder="Id del producto" ><br>
+                    <button id="eliminador">Eliminar producto</button>
+                </form>
+
+            </div>
+            <div class="col-5">
+                <h1>Tabla de productos</h1> 
+                <table id="docTable" border="1">
+                    <thead><tr><th scope="col">Producto</th><!--<th scope="col">Descripción</th>--><th scope="col">Precio</th><th scope="col">ID</th></tr></thead>
+                </table>
+            </div>
+        </div>
+      </div>
+
+    
+    </div>
+    <hr>
+    <h1>LISTADO DE PRODUCTOS</h1>
+            <table class="table" id="tabla">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre Producto</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Imagen</th>
+                  </tr>
+                </thead>
+            </table>
+
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function(){
+        /*--------------Script Productos----------------*/
+        $.ajax({
+            url:'/prueba',
+            method:'GET',
+            success: function(respuesta){
+                $("#docTable").append(respuesta)
+                $(".eliminador").click(function(res,req){
+                    $(this).closest("tr").remove();
+                    var id_boton=$(this).attr("id");
+                    alert("Eliminando Producto")
+
+                // Peticion Delete al servidor  
+                    $.ajax({
+                        url:'/administrador/'+id_boton,
+                        method: "DELETE",
+                        success: function(r){
+                            console.log("Documento eliminado"+r)
+                        }
+                    });        
+                })
+                console.log(respuesta);
+            }
+            });
+        /*---------------Script Administrador-------------*/
+        $("#create").click(function(e){
+            e.preventDefault(e);
+            var datos_form=$("#admiForm").serialize();//obtengo datos del formulario
+
+            $.ajax({
+                url: "/administrador",
+                type: "POST",
+                data: datos_form,
+                success: function(respuesta){
+                    //console.table(respuesta);
+                    
+                    $('#tabla').append("<tr>")
+                    $('#tabla').append("<th scope='col'>"+ respuesta.name + "</th>")
+                    $('#tabla').append("<th scope='col'>"+ respuesta.description + "</th>")
+                    $('#tabla').append("<th scope='col'>"+ respuesta.prize + "</th>")
+                    $('#tabla').append("<th scope='col'>"+ respuesta._id + "</th>")
+                    $('#tabla').append("</tr>")
+                    
+                }});
+          });
+          $("#update").click(function(e){//modifica documentos en MongoDB
+            e.preventDefault();
+            var datos_modificar=$("#updateForm").serialize();
+            var param_id =$("#datoId").val();
+            $.ajax({
+                url:"/administrador/"+param_id,
+                method:"PUT",
+                data:datos_modificar,
+                success:function(respuesta){
+                    console.log(respuesta)
+                }
+            })
+          })
+          $("#eliminador").click(function(e){//elimina documentos en MongoDB
+            e.preventDefault();
+            var docEliminado=$("#identificador").val();
+            $.ajax({
+                url:"/administrador/"+docEliminado,
+                method:"DELETE",
+                success:function(respuesta){
+                    console.log(respuesta)
+                }
+            })
+          })
+
+      })
+
+      
+     </script>
+   </body>
+</html>
+    

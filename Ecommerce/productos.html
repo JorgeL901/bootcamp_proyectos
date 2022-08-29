@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leon Grandson Men's Perfume</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+    <style>
+      body{background-color: #BFC9CA;}
+      .card-img-top{
+        width: 90%;
+        height: 180px;
+                }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="./imagenes/logonegro.jpg" alt="" width="30" height="24" class="d-inline-block align-text-top"/>
+          Leon Grandson Men's Perfumes
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="navbarRight">
+                <ul class="navbar-nav ">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Carrito</a>
+                    </li>
+                    
+                </ul>
+            </div>
+      </div>
+    </nav>
+<!--Productos--->
+    <section id="productos">
+                <div class="col text-center text-uppercase">
+                    <small>Estos son nuestros</small>
+                    <h2>Productos</h2>
+                </div>
+    </section>
+        <div class="container">
+            <div class="row" id = "gridProductos">
+                <!--<div class="col-3 p-1">
+                    <div class="card" style="width: 180 px; height: 400 px;">
+                        <img src="./imagenes/perfumes/boss.jpg" class="card-img-top" alt="" >
+                        <div class="card-body">
+                          <h5 class="card-title">The Scent Le Parfum de BOSS</h5>
+                          <p class="card-text">COP$ 357.000</p>
+                          <a href="#" class="btn btn-primary">Añadir</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 p-1">
+                    <div class="card" style="width: 180 px; height: 400 px;">
+                        <img src="./imagenes/perfumes/ck-everyone.jpg" class="card-img-top" alt="ck-everyone" width="80%">
+                        <div class="card-body">
+                          <h5 class="card-title">CK Everyone de Calvin Klein</h5>
+                          <p class="card-text">COP$ 210.000</p>
+                          <a href="#" class="btn btn-primary">Añadir</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 p-1">
+                    <div class="card" style="width: 180 px; height: 400 px;">
+                        <img src="./imagenes/perfumes/dior-homme.jpg" class="card-img-top" alt="dior-homme">
+                        <div class="card-body">
+                          <h5 class="card-title">Dior Homme Sport de Dior</h5>
+                          <p class="card-text">COP$ 440.000</p>
+                          <a href="#" class="btn btn-primary">Añadir</a>
+                        </div>
+                    </div>
+                  </div>
+                <div class="col-3 p-1">
+                    <div class="card" style="width: 180 px; height: 400 px;">
+                        <img src="./imagenes/perfumes/onemillion.jpg" class="card-img-top" alt="onemillion">
+                        <div class="card-body">
+                          <h5 class="card-title">1 Million Elixir de Paco Rabanne</h5>
+                          <p class="card-text">COP$ 440.000</p>
+                          <a href="#" class="btn btn-primary">Añadir</a>
+                        </div>
+                    </div>
+                </div>-->                                                          
+            </div>
+        </div>
+    
+
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+    $(document).ready(function(){
+      $.ajax({
+        url:'/pruebaProducto',
+        method:'GET',
+        success: function(respuesta){
+          $('#gridProductos').append(respuesta);
+          console.log(respuesta);
+
+        }
+      }); 
+      $.ajax({
+        url:'/productos',
+        method:'GET',
+        success: function(){
+          console.log("Cargo la pagina");
+        }
+      });
+      
+                
+      });
+    
+    </script>
+  </body>
+</html>
