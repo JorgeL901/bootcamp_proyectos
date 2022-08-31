@@ -11,15 +11,10 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-    
+    <link rel="stylesheet" href="style.css">
     <style>
       body{background-color: #BFC9CA;}
-      #imageMain{
-        height: 150px;
-      }
-      .row{display: block;
-            align-items: center;
-            justify-content: center;}
+      
     </style>
   </head>
   <body>
@@ -45,15 +40,22 @@
             </div>
       </div>
     </nav>
-    <div class="container">
-      <div class="card" style="max-width: 540px;">
-        <div class="row"+ id="showItem">
-        </div>
-      </div>  
+    <h1>CARRITO DE COMPRAS</h1>
+            <table class="table" id="tabla">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre Producto</th>
+                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio Total</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaPedido">
+    <div id="total"></div>
 
-      
-    </div>
-    
+                </tbody>
+            </table>
+    </div>    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -62,43 +64,17 @@
     ></script>
     <script>
         $(document).ready(function () {
-        var url_actual = window.location.href;
-        console.log(url_actual)
-        // http://localhost:3000/item/630d57b6ca4c9130f26622df
-        $.ajax({
-          url: url_actual,
-          method: "POST",
-          success: function (respuesta) {
-            
-            $("#showItem").append('<div><img src="'+respuesta.image +'" id="imageMain" alt="'+respuesta.name+'"></div><div class="col-md-8"><div class="card-body">');
-            $("#showItem").append('<h5 class="card-title">'+respuesta.name +'</h5>');
-            $("#showItem").append('<p class="card-text">'+respuesta.description+'</p>');
-            $("#showItem").append('<p class="card-text"><h2>COP$ '+respuesta.prize+'<hr>Cantidad:<input type="number" name="cantidad" id="cantidad"><hr><a href="/carrito" id="addCar" class="btn">Añadir al carrito</a><br><a href="/productos" class="btn bg">Seguir Comprando</a></h2></p></div></div></div>');  
-                        
-            console.log(respuesta)
-            $("#addCar").click(function(e){
-              e.preventDefault(e);
-              var cantidad=$("#cantidad").val()
-              $.ajax({
-                url:"/comprar",
-                method:"POST",
-                data:{name: respuesta.name,
-                      prize: respuesta.prize,
-                      cantidad: cantidad
-                    },
-              success:function(res){
-                alert("Se añadio el producto seleccionado")
-              }  
-              })
-            })
-
-            },
+         var total;
+         $.ajax({
+            url:"/listadoPedido",
+            method: "GET",
+            success:function(respuesta){
+                $("#tablaPedido").append(respuesta.filas);
+                console.log(respuesta.total)           
+                
+            }                                    
         });
-        
-
-
-
-        
+         
       });
     </script>
   </body>

@@ -3,8 +3,10 @@ var app = express();
 const port = 3000;
 var bodyParser = require ("body-parser");
 var mongoose = require ("mongoose");
+
 const { ServerDescription } = require("mongodb");
 app.use(bodyParser.urlencoded({extended:true}));//configura body parser
+app.use(express.static("imagenes"))
 mongoose.connect("mongodb+srv://jorge901:Naruto901@cluster0.cs7i4cn.mongodb.net/BD_Ecommerce?retryWrites=true&w=majority")
     .then(function(bd){
         console.log("Se conecto a la base de datos");
@@ -24,10 +26,14 @@ app.get('/administrador',function(req,res){
     
     res.sendFile(__dirname+"/index.html")
 })
-
+app.get('/carrito',function(req,res){
+    
+    res.sendFile(__dirname+"/carrito.html")
+})
 
 //Importo Modelo de datos
 var Prod=require("./models/Productos");
+var Ped=require("./models/Pedidos");
 
 //Modulos /Administrador (CRUD)
 //Recibir datos del formulario
@@ -98,11 +104,59 @@ app.get("/pruebaProducto",async function(req,res){// Envio productos a pestaña 
         filas = filas + '<div class="card-body">'
         filas = filas + '<h5 class="card-title">'+documentos[i].name+'</h5>'
         filas = filas + '<p class="card-text">COP$'+documentos[i].prize+'</p>'
-        filas = filas + '<a href="./item.html" class="btn btn-primary" id:"'+documentos[i]._id+'>Añadir</a>'
+        filas = filas + '<a href="./item/'+documentos[i]._id+'" class="btn btn-primary" id:"'+documentos[i]._id+'>Añadir</a>'
         filas = filas + '</div></div></div>'
         }
     res.send(filas);
 })
+
+app.get("/listadoPedido", async function(req,res){
+    var pedido = await Ped.find();
+    var filas ="";
+    var totalPedido=0;
+    var cantP;
+    var prizeP;
+    var valorTotal;
+
+    
+    for(var i=0 ; i<pedido.length; i++){
+        filas += '<tr><td scope="col">'+pedido[i].name+'</td>';
+        filas += '<td scope="col">COP$'+pedido[i].prize+'</td>';
+        filas += '<th scope="col">'+pedido[i].cantidad+'</th>';
+        cantP=parseInt(pedido[i].cantidad);
+        prizeP=parseInt(pedido[i].prize)
+        valorTotal=cantP*prizeP
+        filas += '<th scope="col">COP$'+valorTotal+'</th></tr>';
+        totalPedido= totalPedido + valorTotal;
+    }
+    console.log(" El valor total es " +totalPedido)
+    res.send({"filas" : filas, "total":totalPedido});
+})
+
+/*app.get("/totalPedido", async function(req,res){
+    var pedido =await Ped.find();
+    res.send(pedido)
+    })*/
+
+// buscar datos item
+app.get("/item/:id",async function(req,res){
+    var elegido = req.params.id;
+    res.sendFile(__dirname+"/item.html")});
+
+app.post("/item/:id",async function(req,res){
+    var elegido = req.params.id;
+    console.log("Abriendo producto legido "+ elegido);
+    var p= await Prod.findById(elegido); //encuentra el documento a mostrar
+    res.send(p);
+})
+
+//añadir a carrito
+app.post("/comprar",async function(req,res){
+    var datos_form=req.body;
+    p = new Ped(datos_form);
+    await p.save();
+    res.send("Se ha guardado el pedido"); 
+});
 
 //LISTENER
 app.listen(port,function(){
