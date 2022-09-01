@@ -77,7 +77,13 @@ app.delete("/administrador/:id",async function(req,res){
     await p.remove(); //remueve de  MongoDB
 
 })
+app.delete("/carrito/:id",async function(req,res){
+    var eliminado = req.params.id;
+    console.log("Eliminando el producto con Id: "+ eliminado);
+    var p= await Ped.findById(eliminado); //encuentra el documento a eliminar
+    await p.remove(); //remueve de  MongoDB
 
+})
 //obtener datos de Mongo
 
 app.get("/prueba",async function(req,res){// Envio base de datos a tabla administrador
@@ -120,13 +126,16 @@ app.get("/listadoPedido", async function(req,res){
 
     
     for(var i=0 ; i<pedido.length; i++){
+        
         filas += '<tr><td scope="col">'+pedido[i].name+'</td>';
         filas += '<td scope="col">COP$'+pedido[i].prize+'</td>';
         filas += '<th scope="col">'+pedido[i].cantidad+'</th>';
         cantP=parseInt(pedido[i].cantidad);
         prizeP=parseInt(pedido[i].prize)
         valorTotal=cantP*prizeP
-        filas += '<th scope="col">COP$'+valorTotal+'</th></tr>';
+        filas += '<th scope="col">COP$'+valorTotal+'</th>';
+        filas += '<td><button class="eliminador btn btn-danger" id="'+pedido[i]._id+'">X Eliminar</button></td></tr>'
+        
         totalPedido= totalPedido + valorTotal;
     }
     console.log(" El valor total es " +totalPedido)

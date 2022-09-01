@@ -51,9 +51,8 @@
                   </tr>
                 </thead>
                 <tbody id="tablaPedido">
-    <div id="total"></div>
-
                 </tbody>
+                <a href="/pagos" id="total" class="btn btn-success"></a>
             </table>
     </div>    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -70,7 +69,19 @@
             method: "GET",
             success:function(respuesta){
                 $("#tablaPedido").append(respuesta.filas);
-                console.log(respuesta.total)           
+                $("#total").append("Total = "+respuesta.total);
+                $(".eliminador").click(function(req,res){
+                    $(this).closest("tr").remove();
+                    var id_boton=$(this).attr("id");
+                    alert("Eliminando Producto")
+                    $.ajax({
+                        url:'/carrito/'+id_boton,
+                        method: "DELETE",
+                        success: function(r){
+                            console.log("Documento eliminado"+r)
+                        }
+                    });   
+                })           
                 
             }                                    
         });
