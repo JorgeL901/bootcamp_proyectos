@@ -17,27 +17,32 @@ mongoose.connect("mongodb+srv://jorge901:Naruto901@cluster0.cs7i4cn.mongodb.net/
 app.use(bodyParser.urlencoded({extended:true}));    
 
 //importo el modelo de datos
-var Pers=require("./Personas")
+var Pers=require("./models/Personas")
 
 
 //rutas
-app.get("/listado",async function(req,res){
-    var documentos=await Pers.find();
+//Leer
+app.get("/listado", async function(req,res){
+    var documentos= await Pers.find();
     console.log(documentos);
-    res.send("Hola Mundo")
-    //res.sendFile(__dirname+"/index.html");
+    //res.send("Hola Mundo")
+    res.sendFile(__dirname+"/index.html");
 });
 
+//Insertar
 app.post("/persona", async function (req, res) {
     var datos_form = req.body;
-    var p = new Persona(datos_form);
+
+    var p = new Pers(datos_form);
     await p.save(); //Inserta en la base de datos
     res.send("Datos insertados correctamente");
   });
+
 //Update - Actualizar
 app.put("/persona/:id",async function (req,res){
     var parametro = req.params.id;
     console.log("Modificando el documento con ID = "+parametro);
+
 /*
     //Forma 1
     
@@ -51,6 +56,15 @@ app.put("/persona/:id",async function (req,res){
     //Forma 2
     var p=await Pers.updateOne({_id:parametro},req.body);
     res.send("Modificado correctamente");
+})
+app.delete('/persona/:dato', async function(req,res){
+    var parametro = req.params.dato;
+    console.log("Eliminando el documento con ID: "+ parametro);
+  
+    var p = await Pers.findById(parametro);
+    await p.remove();
+
+    res.send("La persona se eliminó correctamente")
 })
 
 

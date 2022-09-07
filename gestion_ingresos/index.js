@@ -23,7 +23,7 @@ var Mov=require("./models/Movimiento")
 //leer
 app.get('/inicio',async function(req,res){
     var documentos= await Mov.find();
-    console.log(doumentos)
+    //console.log(documentos)
     res.sendFile(__dirname + "/index.html")
 });
 
@@ -31,9 +31,9 @@ app.get('/inicio',async function(req,res){
 app.post("/movimiento", async function (req, res) {
     var datos_form = req.body;
     var p = new Mov(datos_form);
-    console.log
     await p.save(); //Inserta en la base de datos
-    res.send("Datos insertados correctamente");
+    res.send(datos_form);
+
   });
 
 //Update - Actualizar

@@ -1,0 +1,16 @@
+<%- include('cabecera.ejs') %>
+<div class = "principal" style="background-color: skyblue;">
+    <h1>Nueva Tarea</h1>
+
+    <form action="/nuevaTarea" method="POST">
+        <input type="text" name="titulo" placeholder="Ingrese el titulo">
+        <br>
+        <textarea name="detalle" cols="30" rows="10" placeholder="Detalle"></textarea>
+        <br>
+        <input type="date" name="fecha" >
+        <br>
+        <button type="submit">Guarda nueva tarea</button>
+    </form>
+</div>
+
+<%- include('footer.ejs') %>
